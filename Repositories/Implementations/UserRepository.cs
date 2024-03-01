@@ -31,8 +31,6 @@ public class UserRepository(TicketingSystemApiContext db) : IUsers
 
         return result;
     }
-
-    
     
     public int UpdateUser(User user)
     {

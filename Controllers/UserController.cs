@@ -30,49 +30,38 @@ namespace TicketingSystemAPI.Controllers
         }
 
         // GET: api/User/5
-        // [HttpGet("{id}")]
-        // public async Task<ActionResult<User>> GetUser(int id)
-        // {
-        //     var user = await _context.Users.FindAsync(id);
-        //
-        //     if (user == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //
-        //     return user;
-        // }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<User>> GetUser(int id)
+        {
+            var a = _userRepository.GetUserById(id);
+        
+            if (a == null)
+            {
+                return NotFound();
+            }
+        
+            return Ok(a);
+        }
 
         // PUT: api/User/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        // [HttpPut("{id}")]
-        // public async Task<IActionResult> PutUser(int id, User user)
-        // {
-        //     if (id != user.Id)
-        //     {
-        //         return BadRequest();
-        //     }
-        //
-        //     _context.Entry(user).State = EntityState.Modified;
-        //
-        //     try
-        //     {
-        //         await _context.SaveChangesAsync();
-        //     }
-        //     catch (DbUpdateConcurrencyException)
-        //     {
-        //         if (!UserExists(id))
-        //         {
-        //             return NotFound();
-        //         }
-        //         else
-        //         {
-        //             throw;
-        //         }
-        //     }
-        //
-        //     return NoContent();
-        // }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutUser(int id, User user)
+        {
+            if (id != user.Id)
+            {
+                return BadRequest();
+            }
+
+            var a = _userRepository.UpdateUser(user);
+
+            if (a < 0)
+            {
+                return BadRequest(a);
+            }
+            
+            return Ok($"Updated the the user {user.UserName}");
+        }
 
         // POST: api/User
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -85,28 +74,22 @@ namespace TicketingSystemAPI.Controllers
                 return BadRequest(a);
             }
 
-            return Ok($"Added {a}");
+            return Ok($"Added user with id: {a}");
         }
 
         // DELETE: api/User/5
-        // [HttpDelete("{id}")]
-        // public async Task<IActionResult> DeleteUser(int id)
-        // {
-        //     var user = await _context.Users.FindAsync(id);
-        //     if (user == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //
-        //     _context.Users.Remove(user);
-        //     await _context.SaveChangesAsync();
-        //
-        //     return NoContent();
-        // }
-        //
-        // private bool UserExists(int id)
-        // {
-        //     return _context.Users.Any(e => e.Id == id);
-        // }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var a = _userRepository.DeleteUser(id);
+
+            if (a < 0)
+            {
+                return BadRequest(a);
+            }
+
+            return Ok($"Deleted the user {a}");
+        }
+        
     }
 }
